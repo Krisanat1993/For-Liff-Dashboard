@@ -236,20 +236,20 @@ function filterByCourse() {
 
                 // Custom formatted display
                 const formattedText = `
-                        <p><strong>(${row['รหัสประจำตัว']}) ${row['ยศ']} ${row['ชื่อ']} ${row['สกุล']}</strong></p>
-                        <p><strong>การขออนุญาต:</strong> ${row['การขออนุญาต']}</p>
-                        <p><strong>ระยะเวลา:</strong> ${startDate} ถึง ${endDate}</p>
-                        <p><strong>เหตุผลชี้แจง:</strong> ${row['เหตุผลชี้แจง']}</p>
-                         <p><strong>Timestamp:</strong> ${Timestamp}</p>
+                            <p><strong>(${row['รหัสประจำตัว']}) ${row['ยศ']} ${row['ชื่อ']} ${row['สกุล']}</strong></p>
+                            <p><strong>การขออนุญาต:</strong> ${row['การขออนุญาต']}</p>
+                            <p><strong>ระยะเวลา:</strong> ${startDate} ถึง ${endDate}</p>
+                            <p><strong>เหตุผลชี้แจง:</strong> ${row['เหตุผลชี้แจง']}</p>
+                             <p><strong>Timestamp:</strong> ${Timestamp}</p>
                 `;
 
                 cardBody += formattedText;
                 cardBody += `
-                        <button type="button" class="btn btn-primary" data-record='${JSON.stringify(row)}' aria-label="Show record details" onclick="showDetails(this)">รายละเอียด</button>
-                        <button type="button" class="btn btn-approval1" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ1')">หัวหน้าหมวด</button>
-                        <button type="button" class="btn btn-approval2" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ2')">หัวหน้านักเรียน</button>
-                        <button type="button" class="btn btn-approval3" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ3')">ที่ปรึกษาหมวด</button>
-                        <button type="button" class="btn btn-approval4" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ4')">นายทหารปกครอง</button>
+                            <button type="button" class="btn btn-primary" data-record='${JSON.stringify(row)}' aria-label="Show record details" onclick="showDetails(this)">รายละเอียด</button>
+                            <button type="button" class="btn btn-approval1" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ1')">หัวหน้าหมวด</button>
+                            <button type="button" class="btn btn-approval2" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ2')">หัวหน้านักเรียน</button>
+                            <button type="button" class="btn btn-approval3" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ3')">ที่ปรึกษาหมวด</button>
+                            <button type="button" class="btn btn-approval4" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ4')">นายทหารปกครอง</button>
                 `;
                 cardBody += '</div>';
                 card.innerHTML = cardBody;
@@ -368,11 +368,12 @@ function filterByCourse() {
             const date = new Date(dateStr);
             if (isNaN(date.getTime())) return dateStr;
 
-            // ดึงค่าวัน/เดือน/ปี จาก UTC (Coordinated Universal Time)
-            // เพื่อป้องกันการเลื่อนของวันที่จาก Timezone
-            const day = date.getUTCDate()+1;
-            const month = date.getUTCMonth() + 1; // getUTCMonth() เริ่มที่ 0
-            const year = date.getUTCFullYear();
+            // แก้ไข: เปลี่ยนมาใช้ local date functions (getDate, getMonth, getFullYear)
+            // เพื่อให้สอดคล้องกับ Timezone (GMT+7) ที่ถูกแปลงมา
+            // และตรงกับการทำงานของฟังก์ชัน formatDateTimeToThai
+            const day = date.getDate();
+            const month = date.getMonth() + 1; // getMonth() เริ่มที่ 0
+            const year = date.getFullYear();
 
             return `${day}/${month}/${year}`;
         }
