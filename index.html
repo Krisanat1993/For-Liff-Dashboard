@@ -369,7 +369,7 @@ function filterByCourse() {
         function formatDateTimeToThai(dateTimeStr) {
             if (!dateTimeStr) return 'N/A';
 
-            const date = new Date(dateTimeStr);
+            const date = new Date(dateTimeStr)+1;
             if (isNaN(date.getTime())) return dateTimeStr;
 
             const thaiYear = date.getFullYear();
