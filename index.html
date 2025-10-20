@@ -370,7 +370,7 @@ function filterByCourse() {
 
             // ดึงค่าวัน/เดือน/ปี จาก UTC (Coordinated Universal Time)
             // เพื่อป้องกันการเลื่อนของวันที่จาก Timezone
-            const day = date.getUTCDate();
+            const day = date.getUTCDate()+1;
             const month = date.getUTCMonth() + 1; // getUTCMonth() เริ่มที่ 0
             const year = date.getUTCFullYear();
 
