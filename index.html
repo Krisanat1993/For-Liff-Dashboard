@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard-ระบบการลา</title>
-    <!-- Google Font: Kanit -->
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -65,7 +64,6 @@
         <img src="https://drive.google.com/thumbnail?id=1biw0LeK_X0ntKPdH4-8XaPUcl1yGDl59" width="110px">
         <h2 class="mb-3">ระบบอนุมัติการลา</h2>
     
-        <!-- Course Dropdown -->
         <div class="form-group">
             <label for="courseSelector">เลือกหลักสูตร:</label>
             <select id="courseSelector" class="form-control" onchange="filterByCourse()">
@@ -75,22 +73,17 @@
                 <option value="หลักสูตรสัญญาบัตรใหม่">หลักสูตรสัญญาบัตรใหม่</option>
                 <option value="หลักสูตรประทวนใหม่">หลักสูตรประทวนใหม่</option>
                 <option value="หลักสูตรประทวนอาวุโส">หลักสูตรประทวนอาวุโส</option>
-                <!--<option value="หลักสูตรการปฏิบัติการร่วม">หลักสูตรการปฏิบัติการร่วม</option>-->
                 <option value="หลักสูตรการปฏิบัติการร่วม-A">หลักสูตรการปฏิบัติการร่วม-A</option>
                 <option value="หลักสูตรการปฏิบัติการร่วม-B">หลักสูตรการปฏิบัติการร่วม-B</option>
                 <option value="หลักสูตรการปฏิบัติการร่วม-C">หลักสูตรการปฏิบัติการร่วม-C</option>
                 <option value="หลักสูตรการปฏิบัติการร่วม-D">หลักสูตรการปฏิบัติการร่วม-D</option>
-
-
             </select>
         </div>
-      
+    
     
         <div id="status" class="alert alert-info">กำลังโหลดข้อมูล โปรดรอสักครู่...</div>
-        <div id="dataCards" class="card-columns"></div> <!-- Container for cards -->
-    </div>
+        <div id="dataCards" class="card-columns"></div> </div>
 
-        <!-- Modal -->
         <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -233,18 +226,8 @@ function filterByCourse() {
                 card.className = `card ${determineBackgroundClass(row)}`;
                 let cardBody = '<div class="card-body">';
                 
-                function formatDateTimeToThai(dateStr) {
-                  // สร้าง Date object จาก dateStr
-                  const date = new Date(dateStr);
-                  // ดึงค่าวัน, เดือน, ปี, ชั่วโมง และนาที
-                  const day = String(date.getDate()).padStart(2, '0');
-                  const month = String(date.getMonth() + 1).padStart(2, '0');
-                  const year = date.getFullYear();
-                  const hours = String(date.getHours()).padStart(2, '0');
-                  const minutes = String(date.getMinutes()).padStart(2, '0');
-                  // รวมข้อความในรูปแบบ "วัน/เดือน/ปี, เวลา hh:mm"
-                  return `${day}/${month}/${year}, เวลา ${hours}:${minutes}`;
-                };
+                // (ลบฟังก์ชัน formatDateTimeToThai ที่ซ้ำซ้อนภายในนี้)
+                // จะเรียกใช้ฟังก์ชันที่อยู่ด้านนอกแทน
 
                 const startDate = row['ตั้งแต่วันที่'] ? formatDateToThai(row['ตั้งแต่วันที่']) : 'N/A';
                 const endDate = row['ถึงวันที่'] ? formatDateToThai(row['ถึงวันที่']) : 'N/A';
@@ -253,22 +236,20 @@ function filterByCourse() {
 
                 // Custom formatted display
                 const formattedText = `
-                    <p><strong>(${row['รหัสประจำตัว']}) ${row['ยศ']} ${row['ชื่อ']} ${row['สกุล']}</strong></p>
-                    <p><strong>การขออนุญาต:</strong> ${row['การขออนุญาต']}</p>
-                    <p><strong>ระยะเวลา:</strong> ${startDate} ถึง ${endDate}</p>
-                    <p><strong>เหตุผลชี้แจง:</strong> ${row['เหตุผลชี้แจง']}</p>
-                     <p><strong>Timestamp:</strong> ${Timestamp}</p>
-
-
+                        <p><strong>(${row['รหัสประจำตัว']}) ${row['ยศ']} ${row['ชื่อ']} ${row['สกุล']}</strong></p>
+                        <p><strong>การขออนุญาต:</strong> ${row['การขออนุญาต']}</p>
+                        <p><strong>ระยะเวลา:</strong> ${startDate} ถึง ${endDate}</p>
+                        <p><strong>เหตุผลชี้แจง:</strong> ${row['เหตุผลชี้แจง']}</p>
+                         <p><strong>Timestamp:</strong> ${Timestamp}</p>
                 `;
 
                 cardBody += formattedText;
                 cardBody += `
-                    <button type="button" class="btn btn-primary" data-record='${JSON.stringify(row)}' aria-label="Show record details" onclick="showDetails(this)">รายละเอียด</button>
-                    <button type="button" class="btn btn-approval1" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ1')">หัวหน้าหมวด</button>
-                    <button type="button" class="btn btn-approval2" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ2')">หัวหน้านักเรียน</button>
-                    <button type="button" class="btn btn-approval3" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ3')">ที่ปรึกษาหมวด</button>
-                    <button type="button" class="btn btn-approval4" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ4')">นายทหารปกครอง</button>
+                        <button type="button" class="btn btn-primary" data-record='${JSON.stringify(row)}' aria-label="Show record details" onclick="showDetails(this)">รายละเอียด</button>
+                        <button type="button" class="btn btn-approval1" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ1')">หัวหน้าหมวด</button>
+                        <button type="button" class="btn btn-approval2" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ2')">หัวหน้านักเรียน</button>
+                        <button type="button" class="btn btn-approval3" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ3')">ที่ปรึกษาหมวด</button>
+                        <button type="button" class="btn btn-approval4" onclick="promptPassword('${row['Timestamp']}', '${row['ชื่อ']}', 'การอนุมัติ4')">นายทหารปกครอง</button>
                 `;
                 cardBody += '</div>';
                 card.innerHTML = cardBody;
@@ -372,17 +353,32 @@ function filterByCourse() {
             const date = new Date(dateTimeStr);
             if (isNaN(date.getTime())) return dateTimeStr;
 
-            const thaiYear = date.getFullYear();
+            const thaiYear = date.getFullYear(); 
             const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${thaiYear}`;
             const formattedTime = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
             return `${formattedDate} ${formattedTime}`;
         }
 
+        // ======================================================
+        // START: โค้ดที่แก้ไข
+        // ======================================================
         function formatDateToThai(dateStr) {
             if (!dateStr) return 'N/A';
-            const [day, month, year] = dateStr.split('-');
-            return `${parseInt(day+1, 10)}/${parseInt(month, 10)}/${parseInt(year, 10)}`;
+            
+            const date = new Date(dateStr);
+            if (isNaN(date.getTime())) return dateStr;
+
+            // ดึงค่าวัน/เดือน/ปี จาก UTC (Coordinated Universal Time)
+            // เพื่อป้องกันการเลื่อนของวันที่จาก Timezone
+            const day = date.getUTCDate();
+            const month = date.getUTCMonth() + 1; // getUTCMonth() เริ่มที่ 0
+            const year = date.getUTCFullYear();
+
+            return `${day}/${month}/${year}`;
         }
+        // ======================================================
+        // END: โค้ดที่แก้ไข
+        // ======================================================
 
         function formatTime(isoTime) {
             const time = new Date(isoTime);
@@ -396,8 +392,8 @@ function filterByCourse() {
                 let value = record[key];
                 if (key === 'Timestamp') {
                     value = formatDateTimeToThai(value);
-                } else if (key.includes('วันที่')) {
-                    value = formatDateToThai(value);
+                } else if (key.includes('วันที่')) { // 'ตั้งแต่วันที่', 'ถึงวันที่'
+                    value = formatDateToThai(value); // ใช้ฟังก์ชันที่แก้ไขแล้ว
                 } else if (key.includes('เวลา')) {
                     value = formatTime(value);
                 }
@@ -408,7 +404,6 @@ function filterByCourse() {
         }
     </script>
 
-    <!-- jQuery and Bootstrap Bundle (includes Popper) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
